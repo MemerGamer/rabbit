@@ -1,0 +1,102 @@
+<html>
+    <head>
+        <meta charset = "utf-8" />
+
+        <title>Cross-Fox</title>
+
+        <link id="dark-scheme-icon" rel="icon" href="./fox-50-dark.png" type="image/png" media="prefers-color-scheme: dark">
+        <link id="light-scheme-icon" rel="icon" href="./fox-50-light.png" type="image/png" media="prefers-color-scheme: light">
+        <link id="light-scheme-icon" rel="icon" href="./fox-50-light.png" type="image/png" media="prefers-color-scheme: no-preference">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@300&display=swap" rel="stylesheet">
+
+        <style>
+            .refresh {
+                position: absolute;
+                margin: auto;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                left: 0;
+                height: 50%;
+            }
+            header {
+                margin-top: 25px;
+            }
+            header h1 {
+                display: inline;
+            }
+            header img {
+                display: inline;
+                position: relative;
+                top: 13px;
+                width: 50px;
+                height: 50px;
+                margin-left: 5px;
+            }
+            body {
+                background-color: #c4743d;
+                text-align: center;
+                margin-bottom: 50px;
+                font-family: 'Inconsolata', monospace;
+            }
+            h1 {
+                color: #f8f4f2;
+            }
+            h2 {
+                color: #f8f4f2;
+            }
+            p {
+                color: #f8f4f2;
+            }
+            button {
+                margin: 10px; 
+                padding: 30px; 
+                background-color: #613e2b;
+                color: #f8f4f2; 
+                border: 2px solid black; 
+                border-radius: 5px; 
+                font-size: 20px;
+            }
+            button:hover{
+                margin: 10px; 
+                padding: 30px; 
+                background-color: #613e2b;
+                color: #f8f4f2; 
+                border: 2px solid white; 
+                border-radius: 5px; 
+                font-size: 20px;
+            }       
+            footer {
+                position: fixed;
+                height: 150px;
+                bottom: 0px;
+                left: 0px;
+                right: 0px;
+                margin-bottom: 0px;
+            } 
+        </style>
+
+    </head>
+    <body>
+        <header>
+            <h1>Hello, Fox!</h1>
+            <img src="./fox-logo.gif" alt="fox icon">
+        </header>
+        <div class="refresh">
+            <h2>Request counter: %i</h2>
+            <button type="button" onclick="refreshPage()" name="refresh">REFRESH PAGE</button>
+        </div>
+        <footer>
+            <h2>Framework created by</h2>
+            <p><strong>Kovács Bálint Hunor and Nagy Szabolcs</strong></p>
+            <p>Design made by Schifler Patricia Vivien</p>
+        </footer>
+        <script>
+            function refreshPage() {
+                window.location.reload();
+            }
+        </script>
+    </body>
+</html>
