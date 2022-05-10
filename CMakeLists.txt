@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.20)
-project(cross_fox C)
+project(rabbit C)
 
 set(CMAKE_C_STANDARD 99)
 
-include_directories(fox/headers/helpers fox/headers/models/networking)
+include_directories(rabbit/headers/helpers rabbit/headers/models/networking)
 
-add_executable(cross_fox demo/main.c fox/src/helpers/utils.c fox/headers/helpers/utils.h fox/headers/helpers/constants.h fox.h fox/src/models/networking/server.c fox/headers/models/networking/server.h)
+add_executable(rabbit demo/main.c rabbit/src/helpers/utils.c rabbit/headers/helpers/utils.h rabbit/headers/helpers/constants.h fox.h rabbit/src/models/networking/server.c rabbit/headers/models/networking/server.h)

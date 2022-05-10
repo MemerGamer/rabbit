@@ -7,14 +7,14 @@
 #include <stdlib.h>
 
 //this is the implementation of the constructor, this function initializes the constructor with input data
-struct FoxServer fox_server_constructor(int domain, int service, int protocol, u_long _interface, char* port, int backlog,
-                                        void (*fox_launch)(struct FoxServer *server)) {
+struct RabbitServer rbt_server_constructor(int domain, int service, int protocol, u_long _interface, char* port, int backlog,
+                                           void (*rbt_launch)(struct RabbitServer *server)) {
     #ifdef _WIN32
         WSADATA wsa_data;
         WSAStartup(MAKEWORD(1,1), &wsa_data);
     #endif
 
-    struct FoxServer server;
+    struct RabbitServer server;
 
     struct addrinfo *result = NULL, hints;
     ZeroMemory(&hints, sizeof (hints));

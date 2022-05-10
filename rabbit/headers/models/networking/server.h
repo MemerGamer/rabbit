@@ -19,7 +19,7 @@
 
 #include <string.h>
 
-struct FoxServer{
+struct RabbitServer{
     int domain;
     int service;
     int protocol;
@@ -31,11 +31,11 @@ struct FoxServer{
 
     SOCKET socket;
 
-    void (*fox_launch)(struct FoxServer *server);
+    void (*rbt_launch)(struct RabbitServer *server);
 };
 
 //this is the declaration of the constructor
-struct FoxServer fox_server_constructor(int domain, int service, int protocol, u_long _interface, char* port, int backlog,void(*fox_launch)(struct FoxServer *server));
+struct RabbitServer rbt_server_constructor(int domain, int service, int protocol, u_long _interface, char* port, int backlog, void(*rbt_launch)(struct RabbitServer *server));
 
 
 #endif //CROSS_FOX_SERVER_H

@@ -1,19 +1,9 @@
 #include <stdio.h>
 #include <string.h>
-#include "server.h"
 #include  <signal.h>
+#include "server.h"
 
-//ideas
-// fox_settings settings = calloc(1, sizeof(fox_settings));
-// settings->port = "8080";
-/**
- * settings:
- *  - port: alapbol NULL
- */
-// fox_add_endpoint("/app/get/", FOX_GET, &myFunc);
-// fox_start_server(settings);
-
-typedef struct html_response{
+typedef struct rbt_html_response{
     char* version;
     char* server_type;
     char* date;
@@ -21,9 +11,9 @@ typedef struct html_response{
     char* connection_type;
     char* content;
     char* full_response;
-}html_response;
+}rbt_html_response;
 
-void  INThandler(int sig){
+void INThandler(int sig){
     char  c;
     signal(sig, SIG_IGN);
     printf("Do you really want to quit? [y/n] ");
@@ -38,7 +28,7 @@ void  INThandler(int sig){
     getchar(); // Get new line character
 }
 
-char* fox_readFromFile(char* filename){
+char* rbt_readFromFile(char* filename){
     FILE* fin;
     fin = fopen(filename, "r");
     if (!fin) {
@@ -74,7 +64,7 @@ char* fox_readFromFile(char* filename){
     return input_buffer;
 }
 
-int fox_launch(){
+int rbt_launch(){
     // Initialize Winsock.
     WSADATA wsaData;
     int iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
@@ -120,7 +110,7 @@ int fox_launch(){
     int numberOfConnections = 1;
 
     signal(SIGINT, INThandler);
-    html_response FoxResponse;
+    rbt_html_response Rabbit_Response;
     while(1){
         //----------------------
         // Create a SOCKET for accepting incoming requests.
@@ -142,50 +132,50 @@ int fox_launch(){
             char hello[20000];
 
             //setting up data about version
-            FoxResponse.version = (char*) calloc(strlen("HTTP/1.1 200 OK GMT\n"),sizeof(char));
-            memcpy(FoxResponse.version, "HTTP/1.1 200 OK GMT\n", strlen("HTTP/1.1 200 OK GMT\n") + 1);
+            Rabbit_Response.version = (char*) calloc(strlen("HTTP/1.1 200 OK GMT\n"), sizeof(char));
+            memcpy(Rabbit_Response.version, "HTTP/1.1 200 OK GMT\n", strlen("HTTP/1.1 200 OK GMT\n") + 1);
 
             //setting up data about server type
-            FoxResponse.server_type = (char*) calloc(strlen("Server: Apache/2.2.14 (Win32)\n"),sizeof(char));
-            memcpy(FoxResponse.server_type, "Server: Apache/2.2.14 (Win32)\n", strlen("Server: Apache/2.2.14 (Win32)\n") + 1);
+            Rabbit_Response.server_type = (char*) calloc(strlen("Server: Apache/2.2.14 (Win32)\n"), sizeof(char));
+            memcpy(Rabbit_Response.server_type, "Server: Apache/2.2.14 (Win32)\n", strlen("Server: Apache/2.2.14 (Win32)\n") + 1);
 
             //setting up data about date
-            FoxResponse.date= (char*) calloc(strlen("Last-Modified: Wed, 22 Jul 2009 19:15:56 GMT\n"),sizeof(char));
-            memcpy(FoxResponse.date, "Last-Modified: Wed, 22 Jul 2009 19:15:56 GMT\n", strlen("Last-Modified: Wed, 22 Jul 2009 19:15:56 GMT\n") + 1);
+            Rabbit_Response.date= (char*) calloc(strlen("Last-Modified: Wed, 22 Jul 2009 19:15:56 GMT\n"), sizeof(char));
+            memcpy(Rabbit_Response.date, "Last-Modified: Wed, 22 Jul 2009 19:15:56 GMT\n", strlen("Last-Modified: Wed, 22 Jul 2009 19:15:56 GMT\n") + 1);
 
             //setting up data about content type
-            FoxResponse.content_type = (char*) calloc(strlen("Content-Type: text/html\n"),sizeof(char));
-            memcpy(FoxResponse.content_type, "Content-Type: text/html\n", strlen("Content-Type: text/html\n") + 1);
+            Rabbit_Response.content_type = (char*) calloc(strlen("Content-Type: text/html\n"), sizeof(char));
+            memcpy(Rabbit_Response.content_type, "Content-Type: text/html\n", strlen("Content-Type: text/html\n") + 1);
 
             //setting up data about connection type
-            FoxResponse.connection_type = (char*) calloc(strlen("Connection: Closed\n"),sizeof(char));
-            memcpy(FoxResponse.connection_type, "Connection: Closed\n", strlen("Connection: Closed\n") + 1);
+            Rabbit_Response.connection_type = (char*) calloc(strlen("Connection: Closed\n"), sizeof(char));
+            memcpy(Rabbit_Response.connection_type, "Connection: Closed\n", strlen("Connection: Closed\n") + 1);
 
             //setting up data about content
             char* contentFromInput = (char*)calloc(20000,sizeof(char));
             strcat(contentFromInput,"\n");  //IMPORTANT: it needs a separating \n
-            strcat(contentFromInput,fox_readFromFile("../demo/src/index.html"));
+            strcat(contentFromInput,rbt_readFromFile("../demo/src/index.html"));
 
-            FoxResponse.content = (char*) calloc(strlen(contentFromInput),sizeof(char));
-            memcpy(FoxResponse.content, contentFromInput, strlen(contentFromInput) + 1);
+            Rabbit_Response.content = (char*) calloc(strlen(contentFromInput), sizeof(char));
+            memcpy(Rabbit_Response.content, contentFromInput, strlen(contentFromInput) + 1);
 
             //allocating memory for full response
-            FoxResponse.full_response = (char*)calloc((
-                    strlen(FoxResponse.version) + strlen(FoxResponse.server_type)+
-                    strlen(FoxResponse.date) + strlen(FoxResponse.content_type) +
-                    strlen(FoxResponse.connection_type) +
-                    strlen(FoxResponse.content) + 1
-                    ),sizeof(char));
+            Rabbit_Response.full_response = (char*)calloc((
+                                                                  strlen(Rabbit_Response.version) + strlen(Rabbit_Response.server_type) +
+                                                                  strlen(Rabbit_Response.date) + strlen(Rabbit_Response.content_type) +
+                                                                  strlen(Rabbit_Response.connection_type) +
+                                                                  strlen(Rabbit_Response.content) + 1
+                    ), sizeof(char));
 
             //creating full response string
-            strcat(FoxResponse.full_response,FoxResponse.version);
-            strcat(FoxResponse.full_response,FoxResponse.server_type);
-            strcat(FoxResponse.full_response,FoxResponse.date);
-            strcat(FoxResponse.full_response,FoxResponse.content_type);
-            strcat(FoxResponse.full_response,FoxResponse.connection_type);
-            strcat(FoxResponse.full_response,FoxResponse.content);
+            strcat(Rabbit_Response.full_response, Rabbit_Response.version);
+            strcat(Rabbit_Response.full_response, Rabbit_Response.server_type);
+            strcat(Rabbit_Response.full_response, Rabbit_Response.date);
+            strcat(Rabbit_Response.full_response, Rabbit_Response.content_type);
+            strcat(Rabbit_Response.full_response, Rabbit_Response.connection_type);
+            strcat(Rabbit_Response.full_response, Rabbit_Response.content);
             //sprintf(hello,"HTTP/1.1 200 OK GMT\nServer: Apache/2.2.14 (Win32)\nLast-Modified: Wed, 22 Jul 2009 19:15:56 GMT\nContent-Type: text/html\nConnection: Closed\n\n<html><body><h1>Hello, Fox %i!</h1></body></html>", numberOfConnections++);
-            sprintf(hello,FoxResponse.full_response, numberOfConnections++);
+            sprintf(hello, Rabbit_Response.full_response, numberOfConnections++);
             printf("\nSending:\n%s\n", hello);
             send(AcceptSocket, hello, (int)strlen(hello), 0 );
         }
@@ -195,5 +185,5 @@ int fox_launch(){
 
 
 int main() {
-    fox_launch();
+    rbt_launch();
 }
