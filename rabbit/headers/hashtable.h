@@ -6,6 +6,7 @@
 #define RABBIT_HASHTABLE_H
 
 #include "../headers/constants.h"
+#include "../headers/errors.h"
 
 typedef struct RabbitEndpoint{
     char* endpoint;                // the endpoint is used as a key
@@ -57,7 +58,7 @@ char** rbt_get_hash_keys(RabbitEndpointHashTable* hash_table);
  * @param endpoint
  * @return RabbitError
  */
-int rbt_put_to_hash_table(RabbitEndpointHashTable** phash_table, char* key, RabbitEndpoint* endpoint);
+RabbitError rbt_put_to_hash_table(RabbitEndpointHashTable** phash_table, char* key, RabbitEndpoint* endpoint);
 
 /**
  * Removes the RabbitEndpoint at the given key from the RabbitEndpointHashTable <br>
@@ -66,7 +67,7 @@ int rbt_put_to_hash_table(RabbitEndpointHashTable** phash_table, char* key, Rabb
  * @param key
  * @return RabbitError
  */
-int rbt_remove_from_hash_table(RabbitEndpointHashTable** phash_table, char* key);
+RabbitError rbt_remove_from_hash_table(RabbitEndpointHashTable** phash_table, char* key);
 
 /**
  * Deletes a RabbitEndpointHashTable <br>
@@ -74,6 +75,6 @@ int rbt_remove_from_hash_table(RabbitEndpointHashTable** phash_table, char* key)
  * @param phash_table
  * @return RabbitError
  */
-int rbt_delete_hash_table(RabbitEndpointHashTable** phash_table);
+RabbitError rbt_delete_hash_table(RabbitEndpointHashTable** phash_table);
 
 #endif //RABBIT_HASHTABLE_H
