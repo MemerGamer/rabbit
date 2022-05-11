@@ -3,6 +3,4 @@ project(rabbit C)
 
 set(CMAKE_C_STANDARD 99)
 
-include_directories(rabbit/headers/helpers rabbit/headers/models/networking)
-
-add_executable(rabbit demo/main.c rabbit/src/helpers/utils.c rabbit/headers/helpers/utils.h rabbit/headers/helpers/constants.h fox.h rabbit/src/models/networking/server.c rabbit/headers/models/networking/server.h)
+add_executable(rabbit demo/main.c rabbit/src/utils.c rabbit/headers/utils.h rabbit/headers/constants.h fox.h rabbit/src/server.c rabbit/headers/server.h rabbit/src/hashtable.c rabbit/headers/hashtable.h rabbit/headers/defaults.h rabbit/src/errors.c rabbit/headers/errors.h rabbit/src/actions.c rabbit/headers/actions.h rabbit/headers/include.h)

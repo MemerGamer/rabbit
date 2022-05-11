@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include  <signal.h>
-#include "server.h"
+#include "../rabbit/headers/server.h"
 
 typedef struct rbt_html_response{
     char* version;
