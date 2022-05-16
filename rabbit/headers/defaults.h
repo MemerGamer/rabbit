@@ -6,8 +6,11 @@
 #ifndef RABBIT_DEFAULTS_H
 #define RABBIT_DEFAULTS_H
 
+#include <stdbool.h>
+
 // region General settings
 #define RBT_LOG_ERRORS true
+#define RBT_ERROR_LOG_FILE "CON"
 // endregion
 
 // region Server defaults
