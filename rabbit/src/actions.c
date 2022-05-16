@@ -2,8 +2,10 @@
 // All the functions that the framework offers
 //
 
-#include "../headers/actions.h"
 #include <stdio.h>
+#include "../headers/actions.h"
+#include "../headers/errors.h"
+#include "../headers/defaults.h"
 
 RabbitError rbt_init(){
     WSADATA wsaData;
@@ -41,6 +43,8 @@ RabbitError rbt_start_server(RabbitServer* server) {
         rbt_end();
         return RBT_ERR_CANT_START_SERVER;
     }
+
+    RBT_SHOW_LOG && rbt_log("Rabbit Server started!", RBT_LOG_FILE);
 
     return RBT_ERR_NO_ERROR;
 }

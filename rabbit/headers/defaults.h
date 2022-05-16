@@ -9,8 +9,8 @@
 #include <stdbool.h>
 
 // region General settings
-#define RBT_LOG_ERRORS true
-#define RBT_ERROR_LOG_FILE "CON"
+#define RBT_SHOW_LOG true
+#define RBT_LOG_FILE "CON"
 // endregion
 
 // region Server defaults
