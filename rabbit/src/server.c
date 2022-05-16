@@ -13,7 +13,7 @@ RabbitServer* rbt_create_server(int address_family, int protocol, int port, char
     strcpy_s(server->address, strlen(address), address);
     server->backlog = backlog;
     server->endpoints = rbt_create_hash_table();
-//     !server->endpoints && RBT_LOG_ERRORS && rbt_log("Unable to create hash table", RBT_ERROR_LOG_FILE)
+    !server->endpoints && RBT_LOG_ERRORS && rbt_log("Unable to create hash table", RBT_ERROR_LOG_FILE);
 
     return server;
 }
