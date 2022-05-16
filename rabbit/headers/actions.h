@@ -8,6 +8,13 @@
 #include "server.h"
 
 /**
+ * Initializes system specific socket implementation <br>
+ * <b>Note:</b> this function needs to be called before any other
+ * @return RabbitError
+ */
+RabbitError rbt_init();
+
+/**
  * Adds a static resource to the server <br>
  * Static resources can be html pages, images, scripts, etc.
  * @param pserver
@@ -27,10 +34,10 @@ RabbitError rbt_add_api(RabbitServer** pserver, char* endpoint, void (*function)
 
 /**
  * Starts the given server
- * @param pserver
+ * @param server
  * @return RabbitError
  */
-RabbitError rbt_start_server(RabbitServer** pserver);
+RabbitError rbt_start_server(RabbitServer* server);
 
 /**
  * Handles the next incoming request <br>

@@ -16,7 +16,7 @@ typedef struct RabbitEndpoint{
 
 typedef struct{
     unsigned int num_of_endpoints;
-    RabbitEndpoint* endpoints;
+    RabbitEndpoint** endpoints;
     char** hash_keys;
 } RabbitEndpointHashTable;
 
@@ -76,5 +76,21 @@ RabbitError rbt_remove_from_hash_table(RabbitEndpointHashTable** phash_table, ch
  * @return RabbitError
  */
 RabbitError rbt_delete_hash_table(RabbitEndpointHashTable** phash_table);
+
+/**
+ * Creates a RabbitEndpoint
+ * @param endpoint
+ * @param method
+ * @param function
+ * @return
+ */
+RabbitEndpoint* rbt_create_endpoint(char* endpoint, RabbitMethod method, void (*function)(const char* fmt, ...));
+
+/**
+ * Deletes a RabbitEndpoint
+ * @param p_endpoint
+ * @return
+ */
+RabbitError rbt_delete_endpoint(RabbitEndpoint** p_endpoint);
 
 #endif //RABBIT_HASHTABLE_H

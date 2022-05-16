@@ -51,4 +51,6 @@ RabbitServer* rbt_create_server(int address_family, int protocol, int port, char
  */
 RabbitError rbt_delete_server(RabbitServer** pserver);
 
+RabbitError rbt_end();
+
 #endif //CROSS_FOX_SERVER_H
