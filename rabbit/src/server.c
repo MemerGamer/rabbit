@@ -20,6 +20,7 @@ RabbitServer* rbt_create_server(int address_family, int protocol, int port, char
         rbt_end();
         return NULL;
     }
+    !server->endpoints && RBT_LOG_ERRORS && rbt_log("Unable to create hash table", RBT_ERROR_LOG_FILE);
 
     return server;
 }
