@@ -45,6 +45,7 @@ RabbitError rbt_start_server(RabbitServer* server) {
     }
 
     RBT_SHOW_LOG && rbt_log("Rabbit Server started!", RBT_LOG_FILE);
+    RBT_SHOW_LOG && rbt_log("To disable these messages check \"defaults.h\". For more info check out our GitHub repository", RBT_LOG_FILE);
 
     return RBT_ERR_NO_ERROR;
 }
@@ -86,7 +87,6 @@ RabbitError rbt_handle_request(RabbitServer **pserver) {
         memcpy(connection_type, "Connection: Closed\n", strlen("Connection: Closed\n") + 1);
 
         //setting up data about content
-//        strcat(contentFromInput,rbt_readFromFile("../demo/src/index.html"));
         FILE *f = fopen("../demo/src/index.html", "rb");
         fseek(f, 0, SEEK_END);
         long fsize = ftell(f);
@@ -119,7 +119,7 @@ RabbitError rbt_handle_request(RabbitServer **pserver) {
         strcat(full_response, content);
         //sprintf(hello,"HTTP/1.1 200 OK GMT\nServer: Apache/2.2.14 (Win32)\nLast-Modified: Wed, 22 Jul 2009 19:15:56 GMT\nContent-Type: text/html\nConnection: Closed\n\n<html><body><h1>Hello, Fox %i!</h1></body></html>", numberOfConnections++);
         sprintf(hello, full_response, numberOfConnections++);
-        printf("\nSending:\n%s\n", hello);
+        RBT_SHOW_LOG && rbt_log("Sending response", RBT_LOG_FILE);
         send(AcceptSocket, hello, (int)strlen(hello), 0 );
     }
     closesocket(AcceptSocket);
