@@ -175,7 +175,8 @@ RabbitError rbt_handle_request(RabbitServer **pserver) {
         strcat(full_response, connection_type);
         strcat(full_response, content);
         //sprintf(hello,"HTTP/1.1 200 OK GMT\nServer: Apache/2.2.14 (Win32)\nLast-Modified: Wed, 22 Jul 2009 19:15:56 GMT\nContent-Type: text/html\nConnection: Closed\n\n<html><body><h1>Hello, Fox %i!</h1></body></html>", numberOfConnections++);
-        sprintf(hello, full_response, numberOfConnections++);
+//        sprintf(hello, full_response, numberOfConnections++); idk it broke :c
+        strcpy(hello, full_response);
         RBT_SHOW_LOG && rbt_log("Sending response", RBT_LOG_FILE);
         send(AcceptSocket, hello, (int)strlen(hello), 0 );
     }
