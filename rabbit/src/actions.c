@@ -80,6 +80,34 @@ RabbitError rbt_start_server(RabbitServer* server) {
 }
 
 RabbitError rbt_handle_request(RabbitServer **pserver) {
+    /**
+     * NOTE:
+     * szoval itt lenyegeben a kovetkezo tortenik:
+     *  - a buffer-be belekerul a request, annak az elejen van a metodus es a path
+     *  - lekered az endpointok kozott a path-et
+     *  - ha megkapta, es talal a metodus, akkor megnezed, hogy statikus vagy api resource
+     *  - statikus ha a function == NULL, es ha != akkor api resource
+     *  - ha statikus kiolvasod egy bufferbe a lekert adatot, a static_resource_path -rol, es visszakuldod
+     *  - ha meg api akkor ki kell talaljuk, hogy hogyan legyen azzal a variadic functionnal
+     */
+
+    RabbitEndpoint* endpoint = rbt_get_from_hash_table((*pserver)->endpoints, "ide_a_request_path");
+    if (endpoint != NULL){ // ide meg kell, hogy && endpoint->method == beolvasott endpoint - erre kellene egy fgv ami visszateriti az enumot string formaba, es hasznalhatod utana a rbt_str_equals() fgv-t a utils.h-bol
+        if (endpoint->function == NULL && endpoint->static_resource_path != NULL){
+            // static resource => serve static resource
+
+            // egyelore probald meg, hogy csak siman kiolvasod a file tartalmat egy bufferbe (lent van erre pelda)
+            // es csak visszakuldod
+            // lehet megy, lehet nem, idk, meglatjuk XD
+        }
+        else if (endpoint->function != NULL && endpoint->static_resource_path == NULL){
+            // api resource => call function
+        }
+    }
+    else {
+        // endpoint not specified by user => 404 response
+    }
+
     SOCKET AcceptSocket;
 
     //----------------------
