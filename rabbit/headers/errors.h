@@ -21,8 +21,7 @@ typedef enum RabbitError{
   RBT_ERR_KEY_NULL_VALUE,
   RBT_ERR_CANT_START_SERVER,
   RBT_ERR_CANT_ADD_STATIC,
-  RBT_HASH_TABLE_FULL,
-  RBT_HASH_TABLE_KEY_ALREADY_USED
+  RBT_HASH_TABLE_FULL
 } RabbitError;
 
 #define rbt_log(error_message, destination) _rbt_log(error_message, destination, __FILE__, __LINE__)

@@ -3,16 +3,16 @@
 #include "../rabbit/headers/defaults.h"
 
 int main() {
-//    rbt_init();
+    rbt_init();
 
-//    RabbitServer* server = rbt_create_server(AF_INET, IPPROTO_TCP, 80, RBT_HOST, 1);
+    RabbitServer* server = rbt_create_server(AF_INET, IPPROTO_TCP, 80, RBT_HOST, 1);
+    rbt_start_server(server);
 
-//    rbt_start_server(server);
-//    rbt_add_static(&server, "/", "../demo/src/index.html");
+    rbt_add_static(&server, "/", "../demo/src/index.html");
+    rbt_add_static(&server, "/fox-logo.gif", "../demo/src/fox-logo.gif");
+    rbt_add_api(&server, "/api/test", NULL);
 
-//    while(1){
-//        rbt_handle_request(&server);
-//    }
-
-    
+    while(1){
+        rbt_handle_request(&server);
+    }
 }

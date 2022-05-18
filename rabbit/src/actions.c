@@ -18,13 +18,42 @@ RabbitError rbt_init(){
     return RBT_ERR_NO_ERROR;
 }
 
-RabbitError rbt_add_static(RabbitServer **pserver, char *resource_path) {
-    return RBT_ERR_KEY_USED;
+RabbitError rbt_add_static(RabbitServer **pserver, char* endpoint, char *resource_path) {
+    RabbitEndpoint* rbt_endpoint = rbt_create_endpoint(endpoint, resource_path, RBT_M_GET, NULL);
+    if (!rbt_endpoint){
+        return RBT_ERR_NULL_POINTER;
+    }
+
+    if (rbt_put_to_hash_table(&(*pserver)->endpoints, endpoint, rbt_endpoint) == RBT_ERR_KEY_USED){
+        if (RBT_SHOW_LOG){
+            char tmp_buff[100];
+            sprintf(tmp_buff, "Endpoint \"%s\" already used", endpoint);
+            rbt_log(tmp_buff, RBT_LOG_FILE);
+        }
+        return RBT_ERR_CANT_ADD_STATIC;
+    }
+    rbt_delete_endpoint(&rbt_endpoint);
+
+    return RBT_ERR_NO_ERROR;
 }
 
 RabbitError rbt_add_api(RabbitServer **pserver, char *endpoint, void (*function)(const char *, ...)) {
-    return RBT_ERR_KEY_USED;
-}
+    RabbitEndpoint* rbt_endpoint = rbt_create_endpoint(endpoint, NULL, RBT_M_GET, function);
+    if (!rbt_endpoint){
+        return RBT_ERR_NULL_POINTER;
+    }
+
+    if (rbt_put_to_hash_table(&(*pserver)->endpoints, endpoint, rbt_endpoint) == RBT_ERR_KEY_USED){
+        if (RBT_SHOW_LOG){
+            char tmp_buff[100];
+            sprintf(tmp_buff, "Endpoint \"%s\" already used", endpoint);
+            rbt_log(tmp_buff, RBT_LOG_FILE);
+        }
+        return RBT_ERR_CANT_ADD_STATIC;
+    }
+    rbt_delete_endpoint(&rbt_endpoint);
+
+    return RBT_ERR_NO_ERROR;}
 
 RabbitError rbt_start_server(RabbitServer* server) {
     struct sockaddr_in service;
@@ -44,7 +73,7 @@ RabbitError rbt_start_server(RabbitServer* server) {
         return RBT_ERR_CANT_START_SERVER;
     }
 
-    RBT_SHOW_LOG && rbt_log("Rabbit Server started!", RBT_LOG_FILE);
+    RBT_SHOW_LOG && rbt_log("Rabbit Server started at http://"RBT_HOST"!", RBT_LOG_FILE);
     RBT_SHOW_LOG && rbt_log("To disable these messages check \"defaults.h\". For more info check out our GitHub repository", RBT_LOG_FILE);
 
     return RBT_ERR_NO_ERROR;

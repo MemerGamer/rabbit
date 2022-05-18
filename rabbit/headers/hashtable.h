@@ -11,6 +11,7 @@
 
 typedef struct RabbitEndpoint{
     char* endpoint;                // the endpoint is used as a key
+    char* static_resource_path;    // only applicable for static resources
     RabbitMethod method;
     void (*function)(const char* fmt, ...);  // has to be researched. Variadic functions
     struct RabbitEndpoint* next;
@@ -77,7 +78,7 @@ RabbitError rbt_delete_hash_table(RabbitEndpointHashTable** phash_table);
  * @param function
  * @return
  */
-RabbitEndpoint* rbt_create_endpoint(char* endpoint, RabbitMethod method, void (*function)(const char* fmt, ...));
+RabbitEndpoint* rbt_create_endpoint(char* endpoint, char* static_resource_path, RabbitMethod method, void (*function)(const char* fmt, ...));
 
 /**
  * Deletes a RabbitEndpoint
