@@ -14,7 +14,7 @@
 // endregion
 
 // region Server defaults
-#define RBT_LOCALHOST "127.0.0.1"
+#define RBT_HOST "127.0.0.1"
 
 #define RBT_MIN_RESPONSE_BUFFER_SIZE 5000
 #define RBT_MED_RESPONSE_BUFFER_SIZE 10000

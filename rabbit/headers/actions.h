@@ -18,10 +18,11 @@ RabbitError rbt_init();
  * Adds a static resource to the server <br>
  * Static resources can be html pages, images, scripts, etc.
  * @param pserver
+ * @param endpoint endpoint at which the resource should be available
  * @param resource_path a full path to the resource
  * @return RabbitError
  */
-RabbitError rbt_add_static(RabbitServer** pserver, char* resource_path);
+RabbitError rbt_add_static(RabbitServer **pserver, char* endpoint, char *resource_path);
 
 /**
  * Adds a REST API endpoint to the server

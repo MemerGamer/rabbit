@@ -7,17 +7,18 @@
 
 #include "../headers/constants.h"
 #include "../headers/errors.h"
+#include "../headers/utils.h"
 
 typedef struct RabbitEndpoint{
     char* endpoint;                // the endpoint is used as a key
     RabbitMethod method;
     void (*function)(const char* fmt, ...);  // has to be researched. Variadic functions
+    struct RabbitEndpoint* next;
 } RabbitEndpoint;
 
 typedef struct{
     unsigned int num_of_endpoints;
     RabbitEndpoint** endpoints;
-    char** hash_keys;
 } RabbitEndpointHashTable;
 
 /**
@@ -40,14 +41,6 @@ int rbt_hash(char* key);
  * @return
  */
 RabbitEndpoint* rbt_get_from_hash_table(RabbitEndpointHashTable* hash_table, char* key);
-
-/**
- * Returns a char* array with the keys of a RabbitEndpointHashTable <br>
- * <b>Note:</b> you can get the number of keys using hash_table.num_of_endpoints
- * @param hash_table
- * @return
- */
-char** rbt_get_hash_keys(RabbitEndpointHashTable* hash_table);
 
 /**
  * Puts a RabbitEndpoint in a RabbitEndpointHashTable, at the given key <br>
