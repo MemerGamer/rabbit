@@ -9,7 +9,8 @@ int main() {
     rbt_start_server(server);
 
     rbt_add_static(&server, "/", "../demo/src/index.html");
-    rbt_add_static(&server, "/fox-logo.gif", "../demo/src/fox-logo.gif");
+    // we'll have some issues with spaces :))
+    rbt_add_static(&server, "/Rabbit icon white.png", "../demo/src/fox-logo.gif");
     rbt_add_api(&server, "/api/test", NULL);
 
     while(1){
