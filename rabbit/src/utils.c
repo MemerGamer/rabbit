@@ -15,3 +15,15 @@ unsigned int rbt_get_num_of_chars(char* string, char find){
     }
     return count;
 }
+
+char* rbt_get_file_content_type(char* filepath){
+    char ext[10];
+    strcpy(ext, strrchr(filepath, '.'));
+
+    if (rbt_str_equals(ext, ".html")){
+        return "text/html";
+    }
+    else if (rbt_str_equals(ext, ".txt")){
+        return "text/plain";
+    }
+}

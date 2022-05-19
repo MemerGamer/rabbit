@@ -10,6 +10,7 @@ int main() {
     rbt_start_server(server);
 
     rbt_add_static(&server, "/", "../demo/src/index.html");
+//    rbt_add_static(&server, "/", "../demo/src/test.txt");
     // we'll have some issues with spaces :))
     rbt_add_static(&server, "/Rabbit icon white.png", "../demo/src/Rabbit icon white.png");
     rbt_add_api(&server, "/api/test", my_function, "%s %s %i %p", "alma", "korte", 1, server);

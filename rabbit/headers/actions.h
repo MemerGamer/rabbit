@@ -7,6 +7,7 @@
 
 #include "server.h"
 #include "arg_array.h"
+#include "response.h"
 
 /**
  * Initializes system specific socket implementation <br>

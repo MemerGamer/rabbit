@@ -87,18 +87,17 @@ RabbitError rbt_start_server(RabbitServer* server) {
 RabbitError rbt_handle_request(RabbitServer **pserver) {
     SOCKET AcceptSocket;
 
-    //----------------------
     // Accept the connection.
     AcceptSocket = accept((*pserver)->listen_socket, NULL, NULL);
     if (AcceptSocket == INVALID_SOCKET) {
         closesocket((*pserver)->listen_socket);
         rbt_end();
-        return -10;
+        return RBT_ERR_SOCKET_ERROR;
     } else{
         /**
          * NOTE:
          * szoval itt lenyegeben a kovetkezo tortenik:
-         *  - a buffer-be belekerul a request, annak az elejen van a metodus es a path
+         *  - a request_buffer-be belekerul a request, annak az elejen van a metodus es a path
          *  - lekered az endpointok kozott a path-et
          *  - ha megkapta, es talal a metodus, akkor megnezed, hogy statikus vagy api resource
          *  - statikus ha a function == NULL, es ha != akkor api resource
@@ -106,17 +105,33 @@ RabbitError rbt_handle_request(RabbitServer **pserver) {
          *  - ha meg api akkor ki kell talaljuk, hogy hogyan legyen azzal a variadic functionnal
          */
 
-        RabbitEndpoint* endpoint = rbt_get_from_hash_table((*pserver)->endpoints, "/api/test");
+        RabbitEndpoint* endpoint = rbt_get_from_hash_table((*pserver)->endpoints, "/");
+        char request_buffer[RBT_MAX_REQUEST_BUFFER_SIZE+1];
+        recv(AcceptSocket, request_buffer, RBT_MAX_REQUEST_BUFFER_SIZE, 0);
+        char response_buffer[RBT_MAX_RESPONSE_BUFFER_SIZE];
 
-        if (endpoint != NULL && rbt_str_equals(rbt_get_method_str(endpoint->method),"GET")){ //
-            // es hasznalhatod utana a rbt_str_equals() fgv-t a utils.h-bol - ezt igy where?
-            //rbt_get_method_str(endpoint->method); - this should return a string
+        if (endpoint != NULL && rbt_str_equals(rbt_get_method_str(endpoint->method),"GET")){
             if (endpoint->function == NULL && endpoint->static_resource_path != NULL){
-                // static resource => serve static resource
+                FILE *file_stream = fopen(endpoint->static_resource_path, "rb");
+                fseek(file_stream, 0, SEEK_END);
+                long fsize = ftell(file_stream);
+                fseek(file_stream, 0, SEEK_SET);
 
-                // egyelore probald meg, hogy csak siman kiolvasod a file tartalmat egy bufferbe (lent van erre pelda)
-                // es csak visszakuldod
-                // lehet megy, lehet nem, idk, meglatjuk XD
+                char* file_content = (char*)calloc(fsize + 2, sizeof(char));
+                strcat(file_content, "\n");  //IMPORTANT: it needs a separating \n
+                fread(file_content, fsize, 1, file_stream);
+                fclose(file_stream);
+
+                file_content[fsize] = '\0';
+
+                char* content = (char*) calloc(strlen(file_content), sizeof(char));
+                memcpy(content, file_content, strlen(file_content) + 1);
+
+                // user content as body
+                RabbitResponse* response = rbt_create_response("200 OK",
+                                                               rbt_get_file_content_type(endpoint->static_resource_path), content);
+                strcpy(response_buffer, rbt_get_response_str(response));
+                rbt_delete_response(&response);
             }
             else if (endpoint->function != NULL && endpoint->static_resource_path == NULL){
                 endpoint->function(endpoint->arg_array);
@@ -126,68 +141,9 @@ RabbitError rbt_handle_request(RabbitServer **pserver) {
             // endpoint not specified by user => 404 response
         }
 
-
-        static int numberOfConnections = 0;
-        char buffer[30001];
-        recv(AcceptSocket,buffer,30000,0);
-        char hello[20000];
-
-        //setting up data about version
-        char* version = (char*) calloc(strlen("HTTP/1.1 200 OK GMT\n"), sizeof(char));
-        memcpy(version, "HTTP/1.1 200 OK GMT\n", strlen("HTTP/1.1 200 OK GMT\n") + 1);
-
-        //setting up data about server type
-        char* server_type = (char*) calloc(strlen("Server: Apache/2.2.14 (Win32)\n"), sizeof(char));
-        memcpy(server_type, "Server: Apache/2.2.14 (Win32)\n", strlen("Server: Apache/2.2.14 (Win32)\n") + 1);
-
-        //setting up data about date
-        char* date= (char*) calloc(strlen("Last-Modified: Wed, 22 Jul 2009 19:15:56 GMT\n"), sizeof(char));
-        memcpy(date, "Last-Modified: Wed, 22 Jul 2009 19:15:56 GMT\n", strlen("Last-Modified: Wed, 22 Jul 2009 19:15:56 GMT\n") + 1);
-
-        //setting up data about content type
-        char* content_type = (char*) calloc(strlen("Content-Type: text/html\n"), sizeof(char));
-        memcpy(content_type, "Content-Type: text/html\n", strlen("Content-Type: text/html\n") + 1);
-
-        //setting up data about connection type
-        char* connection_type = (char*) calloc(strlen("Connection: Closed\n"), sizeof(char));
-        memcpy(connection_type, "Connection: Closed\n", strlen("Connection: Closed\n") + 1);
-
-        //setting up data about content
-        FILE *f = fopen("../demo/src/index.html", "rb");
-        fseek(f, 0, SEEK_END);
-        long fsize = ftell(f);
-        fseek(f, 0, SEEK_SET);
-
-        char* contentFromInput = (char*)calloc(fsize + 2,sizeof(char));
-        strcat(contentFromInput, "\n");  //IMPORTANT: it needs a separating \n
-        fread(contentFromInput, fsize, 1, f);
-        fclose(f);
-
-        contentFromInput[fsize] = 0;
-
-        char* content = (char*) calloc(strlen(contentFromInput), sizeof(char));
-        memcpy(content, contentFromInput, strlen(contentFromInput) + 1);
-
-        //allocating memory for full response
-        char* full_response = (char*)calloc((
-                                                              strlen(version) + strlen(server_type) +
-                                                              strlen(date) + strlen(content_type) +
-                                                              strlen(connection_type) +
-                                                              strlen(content) + 1
-                                                      ), sizeof(char));
-
-        //creating full response string
-        strcat(full_response, version);
-        strcat(full_response, server_type);
-        strcat(full_response, date);
-        strcat(full_response, content_type);
-        strcat(full_response, connection_type);
-        strcat(full_response, content);
-        //sprintf(hello,"HTTP/1.1 200 OK GMT\nServer: Apache/2.2.14 (Win32)\nLast-Modified: Wed, 22 Jul 2009 19:15:56 GMT\nContent-Type: text/html\nConnection: Closed\n\n<html><body><h1>Hello, Fox %i!</h1></body></html>", numberOfConnections++);
-//        sprintf(hello, full_response, numberOfConnections++); idk it broke :c
-        strcpy(hello, full_response);
         RBT_SHOW_LOG && rbt_log("Sending response", RBT_LOG_FILE);
-        send(AcceptSocket, hello, (int)strlen(hello), 0 );
+
+        send(AcceptSocket, response_buffer, (int)strlen(response_buffer), 0 );
     }
     closesocket(AcceptSocket);
 
