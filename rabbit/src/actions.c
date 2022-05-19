@@ -108,7 +108,7 @@ RabbitError rbt_handle_request(RabbitServer **pserver) {
 
         RabbitEndpoint* endpoint = rbt_get_from_hash_table((*pserver)->endpoints, "/api/test");
 
-        if (endpoint != NULL){ //
+        if (endpoint != NULL && rbt_str_equals(rbt_get_method_str(endpoint->method),"GET")){ //
             // es hasznalhatod utana a rbt_str_equals() fgv-t a utils.h-bol - ezt igy where?
             //rbt_get_method_str(endpoint->method); - this should return a string
             if (endpoint->function == NULL && endpoint->static_resource_path != NULL){
