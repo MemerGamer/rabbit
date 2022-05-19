@@ -6,6 +6,7 @@
 #define RABBIT_ACTIONS_H
 
 #include "server.h"
+#include "arg_array.h"
 
 /**
  * Initializes system specific socket implementation <br>
@@ -31,7 +32,7 @@ RabbitError rbt_add_static(RabbitServer **pserver, char* endpoint, char *resourc
  * @param function function to execute
  * @return RabbitError
  */
-RabbitError rbt_add_api(RabbitServer** pserver, char* endpoint, void (*function)(const char* fmt, ...));
+RabbitError rbt_add_api(RabbitServer** pserver, char* endpoint, void (*function)(RabbitArgArray*), ...);
 
 /**
  * Starts the given server

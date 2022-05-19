@@ -3,9 +3,6 @@
 //
 
 #include "../headers/hashtable.h"
-#include "../headers/defaults.h"
-#include <stdlib.h>
-#include <string.h>
 
 RabbitEndpointHashTable *rbt_create_hash_table() {
     RabbitEndpointHashTable* hash_table = (RabbitEndpointHashTable*)calloc(1, sizeof(RabbitEndpointHashTable));
@@ -37,7 +34,7 @@ RabbitEndpoint* rbt_get_from_hash_table(RabbitEndpointHashTable *hash_table, cha
     }
 
     // creating new object to not pass next item in list
-    return rbt_str_equals(node->endpoint, key) ? rbt_create_endpoint(node->endpoint, node->static_resource_path, node->method, node->function) : NULL;
+    return rbt_str_equals(node->endpoint, key) ? rbt_create_endpoint(node->endpoint, node->static_resource_path, node->method, node->function, node->arg_array) : NULL;
 }
 
 RabbitError rbt_put_to_hash_table(RabbitEndpointHashTable **phash_table, char *key, RabbitEndpoint *endpoint) {
@@ -52,10 +49,10 @@ RabbitError rbt_put_to_hash_table(RabbitEndpointHashTable **phash_table, char *k
     RabbitEndpoint* node = (*phash_table)->endpoints[index];
 
     if (node == NULL){  // if this is the first node in the bucket
-        (*phash_table)->endpoints[index] = rbt_create_endpoint(endpoint->endpoint, endpoint->static_resource_path, endpoint->method, endpoint->function);
+        (*phash_table)->endpoints[index] = rbt_create_endpoint(endpoint->endpoint, endpoint->static_resource_path, endpoint->method, endpoint->function, endpoint->arg_array);
     }
     else { // if there are already nodes in the bucket, insert as first node
-        RabbitEndpoint* tmpNode = rbt_create_endpoint(endpoint->endpoint,endpoint->static_resource_path,endpoint->method, endpoint->function);
+        RabbitEndpoint* tmpNode = rbt_create_endpoint(endpoint->endpoint,endpoint->static_resource_path,endpoint->method, endpoint->function, endpoint->arg_array);
         tmpNode->next = node;
         (*phash_table)->endpoints[index] = tmpNode;
     }
@@ -117,7 +114,7 @@ RabbitError rbt_delete_hash_table(RabbitEndpointHashTable **phash_table) {
     return RBT_ERR_NO_ERROR;
 }
 
-RabbitEndpoint* rbt_create_endpoint(char* endpoint, char* static_resource_path, RabbitMethod method, void (*function)(const char* fmt, ...)){
+RabbitEndpoint* rbt_create_endpoint(char* endpoint, char* static_resource_path, RabbitMethod method, void (*function)(RabbitArgArray*), RabbitArgArray* arg_array){
     RabbitEndpoint* _endpoint = (RabbitEndpoint*)calloc(1, sizeof(RabbitEndpoint));
     _endpoint->endpoint = (char*)calloc(strlen(endpoint)+1, sizeof(char));
     if (static_resource_path != NULL){
@@ -127,12 +124,19 @@ RabbitEndpoint* rbt_create_endpoint(char* endpoint, char* static_resource_path, 
     strcpy(_endpoint->endpoint, endpoint);
     _endpoint->method = method;
     _endpoint->function = function;
+    if (arg_array != NULL){
+        _endpoint->arg_array = rbt_create_arg_array(arg_array->num_of_args);
+        rbt_copy_arg_array(arg_array, &_endpoint->arg_array);
+    }
 
     return _endpoint;
 }
 
 RabbitError rbt_delete_endpoint(RabbitEndpoint** p_endpoint){
     free((*p_endpoint)->endpoint);
+    if ((*p_endpoint)->arg_array != NULL){
+        rbt_delete_arg_array(&(*p_endpoint)->arg_array);
+    }
     free(*p_endpoint);
 
     return RBT_ERR_NO_ERROR;

@@ -5,15 +5,20 @@
 #ifndef RABBIT_HASHTABLE_H
 #define RABBIT_HASHTABLE_H
 
+#include <string.h>
+#include <stdlib.h>
 #include "../headers/constants.h"
 #include "../headers/errors.h"
 #include "../headers/utils.h"
+#include "../headers/defaults.h"
+#include "../headers/arg_array.h"
 
 typedef struct RabbitEndpoint{
     char* endpoint;                // the endpoint is used as a key
     char* static_resource_path;    // only applicable for static resources
     RabbitMethod method;
-    void (*function)(const char* fmt, ...);  // has to be researched. Variadic functions
+    void (*function)(RabbitArgArray*);
+    RabbitArgArray* arg_array;
     struct RabbitEndpoint* next;
 } RabbitEndpoint;
 
@@ -78,7 +83,7 @@ RabbitError rbt_delete_hash_table(RabbitEndpointHashTable** phash_table);
  * @param function
  * @return
  */
-RabbitEndpoint* rbt_create_endpoint(char* endpoint, char* static_resource_path, RabbitMethod method, void (*function)(const char* fmt, ...));
+RabbitEndpoint* rbt_create_endpoint(char* endpoint, char* static_resource_path, RabbitMethod method, void (*function)(RabbitArgArray*), RabbitArgArray* arg_array);
 
 /**
  * Deletes a RabbitEndpoint

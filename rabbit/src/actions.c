@@ -6,6 +6,7 @@
 #include "../headers/actions.h"
 #include "../headers/errors.h"
 #include "../headers/defaults.h"
+#include "../headers/arg_array.h"
 
 RabbitError rbt_init(){
     WSADATA wsaData;
@@ -19,7 +20,7 @@ RabbitError rbt_init(){
 }
 
 RabbitError rbt_add_static(RabbitServer **pserver, char* endpoint, char *resource_path) {
-    RabbitEndpoint* rbt_endpoint = rbt_create_endpoint(endpoint, resource_path, RBT_M_GET, NULL);
+    RabbitEndpoint* rbt_endpoint = rbt_create_endpoint(endpoint, resource_path, RBT_M_GET, NULL, NULL);
     if (!rbt_endpoint){
         return RBT_ERR_NULL_POINTER;
     }
@@ -37,8 +38,12 @@ RabbitError rbt_add_static(RabbitServer **pserver, char* endpoint, char *resourc
     return RBT_ERR_NO_ERROR;
 }
 
-RabbitError rbt_add_api(RabbitServer **pserver, char *endpoint, void (*function)(const char *, ...)) {
-    RabbitEndpoint* rbt_endpoint = rbt_create_endpoint(endpoint, NULL, RBT_M_GET, function);
+RabbitError rbt_add_api(RabbitServer **pserver, char *endpoint, void (*function)(RabbitArgArray*), ...) {
+    va_list arg_ptr;    // variable argument list
+    va_start(arg_ptr, function);    // start of variable list
+    RabbitArgArray* arg_array = rbt_get_arg_array(arg_ptr);
+
+    RabbitEndpoint* rbt_endpoint = rbt_create_endpoint(endpoint, NULL, RBT_M_GET, function, arg_array);
     if (!rbt_endpoint){
         return RBT_ERR_NULL_POINTER;
     }
@@ -80,37 +85,6 @@ RabbitError rbt_start_server(RabbitServer* server) {
 }
 
 RabbitError rbt_handle_request(RabbitServer **pserver) {
-    /**
-     * NOTE:
-     * szoval itt lenyegeben a kovetkezo tortenik:
-     *  - a buffer-be belekerul a request, annak az elejen van a metodus es a path
-     *  - lekered az endpointok kozott a path-et
-     *  - ha megkapta, es talal a metodus, akkor megnezed, hogy statikus vagy api resource
-     *  - statikus ha a function == NULL, es ha != akkor api resource
-     *  - ha statikus kiolvasod egy bufferbe a lekert adatot, a static_resource_path -rol, es visszakuldod
-     *  - ha meg api akkor ki kell talaljuk, hogy hogyan legyen azzal a variadic functionnal
-     */
-
-    RabbitEndpoint* endpoint = rbt_get_from_hash_table((*pserver)->endpoints, "ide_a_request_path");
-
-    if (endpoint != NULL){ //
-        // es hasznalhatod utana a rbt_str_equals() fgv-t a utils.h-bol - ezt igy where?
-        //rbt_get_method_str(endpoint->method); - this should return a string
-        if (endpoint->function == NULL && endpoint->static_resource_path != NULL){
-            // static resource => serve static resource
-
-            // egyelore probald meg, hogy csak siman kiolvasod a file tartalmat egy bufferbe (lent van erre pelda)
-            // es csak visszakuldod
-            // lehet megy, lehet nem, idk, meglatjuk XD
-        }
-        else if (endpoint->function != NULL && endpoint->static_resource_path == NULL){
-            // api resource => call function
-        }
-    }
-    else {
-        // endpoint not specified by user => 404 response
-    }
-
     SOCKET AcceptSocket;
 
     //----------------------
@@ -121,6 +95,38 @@ RabbitError rbt_handle_request(RabbitServer **pserver) {
         rbt_end();
         return -10;
     } else{
+        /**
+         * NOTE:
+         * szoval itt lenyegeben a kovetkezo tortenik:
+         *  - a buffer-be belekerul a request, annak az elejen van a metodus es a path
+         *  - lekered az endpointok kozott a path-et
+         *  - ha megkapta, es talal a metodus, akkor megnezed, hogy statikus vagy api resource
+         *  - statikus ha a function == NULL, es ha != akkor api resource
+         *  - ha statikus kiolvasod egy bufferbe a lekert adatot, a static_resource_path -rol, es visszakuldod
+         *  - ha meg api akkor ki kell talaljuk, hogy hogyan legyen azzal a variadic functionnal
+         */
+
+        RabbitEndpoint* endpoint = rbt_get_from_hash_table((*pserver)->endpoints, "/api/test");
+
+        if (endpoint != NULL){ //
+            // es hasznalhatod utana a rbt_str_equals() fgv-t a utils.h-bol - ezt igy where?
+            //rbt_get_method_str(endpoint->method); - this should return a string
+            if (endpoint->function == NULL && endpoint->static_resource_path != NULL){
+                // static resource => serve static resource
+
+                // egyelore probald meg, hogy csak siman kiolvasod a file tartalmat egy bufferbe (lent van erre pelda)
+                // es csak visszakuldod
+                // lehet megy, lehet nem, idk, meglatjuk XD
+            }
+            else if (endpoint->function != NULL && endpoint->static_resource_path == NULL){
+                endpoint->function(endpoint->arg_array);
+            }
+        }
+        else {
+            // endpoint not specified by user => 404 response
+        }
+
+
         static int numberOfConnections = 0;
         char buffer[30001];
         recv(AcceptSocket,buffer,30000,0);
