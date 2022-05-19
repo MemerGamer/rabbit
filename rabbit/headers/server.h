@@ -33,6 +33,8 @@ typedef struct RabbitServer{
     RabbitEndpointHashTable* endpoints;
 } RabbitServer;
 
+char* rbt_get_method_str(RabbitMethod method);
+
 /**
  * Creates a RabbitServer
  * @param address_family

@@ -92,7 +92,10 @@ RabbitError rbt_handle_request(RabbitServer **pserver) {
      */
 
     RabbitEndpoint* endpoint = rbt_get_from_hash_table((*pserver)->endpoints, "ide_a_request_path");
-    if (endpoint != NULL){ // ide meg kell, hogy && endpoint->method == beolvasott endpoint - erre kellene egy fgv ami visszateriti az enumot string formaba, es hasznalhatod utana a rbt_str_equals() fgv-t a utils.h-bol
+
+    if (endpoint != NULL){ //
+        // es hasznalhatod utana a rbt_str_equals() fgv-t a utils.h-bol - ezt igy where?
+        //rbt_get_method_str(endpoint->method); - this should return a string
         if (endpoint->function == NULL && endpoint->static_resource_path != NULL){
             // static resource => serve static resource
 

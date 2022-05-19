@@ -5,6 +5,20 @@
 #include "../headers/server.h"
 #include "../headers/defaults.h"
 
+char* rbt_get_method_str(RabbitMethod method){
+    switch (method) {
+        case RBT_M_GET:
+            return "GET";
+        case RBT_M_POST:
+            return "POST";
+        case RBT_M_PUT:
+            return "PUT";
+        case RBT_M_DELETE:
+            return "DELETE";
+        default: return "GET";
+    }
+}
+
 RabbitServer* rbt_create_server(int address_family, int protocol, int port, char* address, int backlog){
     RabbitServer* server = (RabbitServer*) calloc(1, sizeof(RabbitServer));
     server->address_family = address_family;
