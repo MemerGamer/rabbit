@@ -26,8 +26,14 @@ char* rbt_get_file_content_type(char* filepath){
     else if (rbt_str_equals(ext, ".txt")){
         return "text/plain";
     }
+    else if (rbt_str_equals(ext, ".css")){
+        return "text/css";
+    }
     else if (rbt_str_equals(ext, ".png")){
         return "image/png";
+    }
+    else if (rbt_str_equals(ext, ".js")){
+        return "application/javascript";
     }
 }
 
