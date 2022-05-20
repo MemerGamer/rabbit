@@ -4,9 +4,6 @@
 
 #include <stdio.h>
 #include "../headers/actions.h"
-#include "../headers/errors.h"
-#include "../headers/defaults.h"
-#include "../headers/arg_array.h"
 
 RabbitError rbt_init(){
     WSADATA wsaData;
@@ -94,23 +91,21 @@ RabbitError rbt_handle_request(RabbitServer **pserver) {
         rbt_end();
         return RBT_ERR_SOCKET_ERROR;
     } else{
-        /**
-         * NOTE:
-         * szoval itt lenyegeben a kovetkezo tortenik:
-         *  - a request_buffer-be belekerul a request, annak az elejen van a metodus es a path
-         *  - lekered az endpointok kozott a path-et
-         *  - ha megkapta, es talal a metodus, akkor megnezed, hogy statikus vagy api resource
-         *  - statikus ha a function == NULL, es ha != akkor api resource
-         *  - ha statikus kiolvasod egy bufferbe a lekert adatot, a static_resource_path -rol, es visszakuldod
-         *  - ha meg api akkor ki kell talaljuk, hogy hogyan legyen azzal a variadic functionnal
-         */
-
-        RabbitEndpoint* endpoint = rbt_get_from_hash_table((*pserver)->endpoints, "/");
         char request_buffer[RBT_MAX_REQUEST_BUFFER_SIZE+1];
         recv(AcceptSocket, request_buffer, RBT_MAX_REQUEST_BUFFER_SIZE, 0);
+        RabbitRequest* request = rbt_parse_request(request_buffer);
+        RabbitEndpoint *endpoint = NULL;
+        if (request->path != NULL){
+            rbt_str_replace(request->path, "%20", " ");
+            endpoint = rbt_get_from_hash_table((*pserver)->endpoints, request->path);
+        }
+        else {
+            request = NULL;
+        }
+
         char response_buffer[RBT_MAX_RESPONSE_BUFFER_SIZE];
 
-        if (endpoint != NULL && rbt_str_equals(rbt_get_method_str(endpoint->method),"GET")){
+        if (request != NULL && endpoint != NULL && rbt_str_equals(rbt_get_method_str(endpoint->method),request->method)){
             if (endpoint->function == NULL && endpoint->static_resource_path != NULL){
                 FILE *file_stream = fopen(endpoint->static_resource_path, "rb");
                 fseek(file_stream, 0, SEEK_END);
@@ -124,6 +119,12 @@ RabbitError rbt_handle_request(RabbitServer **pserver) {
 
                 file_content[fsize] = '\0';
 
+                if (rbt_str_equals(rbt_get_file_content_type(endpoint->static_resource_path), "image/png")){
+                    send(AcceptSocket, file_content, fsize, 0 );
+                    closesocket(AcceptSocket);
+                    return RBT_ERR_NO_ERROR;
+                }
+
                 char* content = (char*) calloc(strlen(file_content), sizeof(char));
                 memcpy(content, file_content, strlen(file_content) + 1);
 
@@ -135,10 +136,15 @@ RabbitError rbt_handle_request(RabbitServer **pserver) {
             }
             else if (endpoint->function != NULL && endpoint->static_resource_path == NULL){
                 endpoint->function(endpoint->arg_array);
+                RabbitResponse* response = rbt_create_response("200 OK","", "");
+                strcpy(response_buffer, rbt_get_response_str(response));
+                rbt_delete_response(&response);
             }
         }
         else {
-            // endpoint not specified by user => 404 response
+            RabbitResponse* response = rbt_create_response("404 NOT FOUND","", "");
+            strcpy(response_buffer, rbt_get_response_str(response));
+            rbt_delete_response(&response);
         }
 
         RBT_SHOW_LOG && rbt_log("Sending response", RBT_LOG_FILE);

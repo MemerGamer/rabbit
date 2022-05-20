@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "../rabbit/headers/actions.h"
+#include "../rabbit/headers/include.h"
 
 void my_function(RabbitArgArray* arg_array);
 
@@ -10,11 +10,9 @@ int main() {
     rbt_start_server(server);
 
     rbt_add_static(&server, "/", "../demo/src/index.html");
-//    rbt_add_static(&server, "/", "../demo/src/test.txt");
-    // we'll have some issues with spaces :))
-    rbt_add_static(&server, "/Rabbit icon white.png", "../demo/src/Rabbit icon white.png");
+    rbt_add_static(&server, "/test.txt", "../demo/src/test.txt");
+    rbt_add_static(&server, "/icons/png/Rabbit icon white.png", "../demo/src/Rabbit icon white.png");
     rbt_add_api(&server, "/api/test", my_function, "%s %s %i %p", "alma", "korte", 1, server);
-//    rbt_add_api(&server, "/api/test", my_function);
 
     while(1){
         rbt_handle_request(&server);

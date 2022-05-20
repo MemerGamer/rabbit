@@ -12,6 +12,7 @@
 #include "../headers/utils.h"
 #include "../headers/defaults.h"
 #include "../headers/arg_array.h"
+#include "../headers/request.h"
 
 typedef struct RabbitEndpoint{
     char* endpoint;                // the endpoint is used as a key
