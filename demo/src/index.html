@@ -12,6 +12,12 @@
         <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@300&display=swap" rel="stylesheet">
 
         <style>
+            body{
+                background-image: url("background.png");
+                margin: 0;
+                padding: 0;
+                overflow: hidden;
+            }
             .refresh {
                 position: absolute;
                 margin: auto;
@@ -22,17 +28,23 @@
                 height: 50%;
             }
             header {
-                margin-top: 25px;
+                position: relative;
+                top: 45%;
+                transform: translateY(-50%);
+
+                animation-name: fadein;
+                animation-duration: 2s;
             }
             header h1 {
                 display: inline;
+                font-size: 5rem;
             }
             header img {
                 display: inline;
                 position: relative;
-                top: 13px;
-                width: 50px;
-                height: 50px;
+                top: 12px;
+                width: 6rem;
+                /* height: 50px; */
                 margin-left: 5px;
             }
             body {
@@ -69,34 +81,39 @@
                 font-size: 20px;
             }       
             footer {
-                position: fixed;
+                position: absolute;
                 height: 150px;
                 bottom: 0px;
                 left: 0px;
                 right: 0px;
                 margin-bottom: 0px;
-            } 
+            }
+
+            @keyframes fadein {
+                from {
+                    opacity: 0;
+                    top: 42%;
+                }
+                to {
+                    opacity: 1;
+                    top: 45%;
+                }
+            }
         </style>
 
     </head>
     <body>
-        <header>
-            <h1>Hello, Rabbit!</h1>
-            <img src="../../icons/png/Rabbit%20icon%20white.png" alt="rabbit icon">
-        </header>
-        <div class="refresh">
-            <h2>Request counter: %i</h2>
-            <button type="button" onclick="refreshPage()" name="refresh">REFRESH PAGE</button>
+        <div style="background-color: rgba(0, 0, 0, 0.26);height: 100vh;width: 100%;position: relative;">
+            <header>
+                <h1>Hello, <span style="margin-right: 15px;">Rabbit</span></h1>
+                <img src="./Rabbit%20icon%20white.png" alt="rabbit icon">
+            </header>
+    
+            <footer>
+                <h2>Framework created by</h2>
+                <p><strong>Kovács Bálint Hunor and Nagy Szabolcs</strong></p>
+                <p>Design made by Schifler Patricia Vivien</p>
+            </footer>
         </div>
-        <footer>
-            <h2>Framework created by</h2>
-            <p><strong>Kovács Bálint Hunor and Nagy Szabolcs</strong></p>
-            <p>Design made by Schifler Patricia Vivien</p>
-        </footer>
-        <script>
-            function refreshPage() {
-                window.location.reload();
-            }
-        </script>
     </body>
 </html>

@@ -11,7 +11,8 @@ int main() {
 
     rbt_add_static(&server, "/", "../demo/src/index.html");
     rbt_add_static(&server, "/test.txt", "../demo/src/test.txt");
-    rbt_add_static(&server, "/icons/png/Rabbit icon white.png", "../demo/src/Rabbit icon white.png");
+    rbt_add_static(&server, "/Rabbit icon white.png", "../demo/src/Rabbit icon white.png");
+    rbt_add_static(&server, "/background.png", "../demo/src/background.png");
     rbt_add_api(&server, "/api/test", my_function, "%s %s %i %p", "alma", "korte", 1, server);
 
     while(1){
