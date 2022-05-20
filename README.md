@@ -7,7 +7,7 @@
   Rabbit is a versatile and easy to use webserver and REST API making framework written in C
 </p>
 
-#### SIDE NOTE: This project was originated from [cross-fox](https://github.com/MemerGamer/cross-fox)
+#### SIDE NOTE: This project originates from [cross-fox](https://github.com/MemerGamer/cross-fox)
 
 ## Datatypes:
 
