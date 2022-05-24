@@ -33,6 +33,12 @@ char *rbt_get_file_content_str(RabbitContentType contentType) {
         case RBT_CT_APP_ZIP: return "application/zip";
         case RBT_CT_APP_X_WWW_FORM_URLENCODED: return "application/x-www-form-urlencoded";
 
+        // Audio
+        case RBT_CT_AUDIO_MPEG: return "audio/mpeg";
+        case RBT_CT_AUDIO_X_MS_WMA: return "audio/x-ms-wma";
+        case RBT_CT_AUDIO_VND_RN_REALAUDIO: return "audio/vnd.rn-realaudio";
+        case RBT_CT_AUDIO_X_WAV: return "audio/x-wav";
+
 
         default: return "text/html";    //default text/html
     }
