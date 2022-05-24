@@ -72,6 +72,18 @@ char *rbt_get_file_content_str(RabbitContentType contentType) {
         case RBT_CT_VID_X_FLV: return "video/x-flv";
         case RBT_CT_VID_WEBM: return "video/webm";
 
+        // VND (Application)
+        case RBT_CT_VND_OASIS_OPENDOC_TXT: return "application/vnd.oasis.opendocument.text";
+        case RBT_CT_VND_OASIS_OPENDOC_SPREADSHEET: return "application/vnd.oasis.opendocument.spreadsheet";
+        case RBT_CT_VND_OASIS_OPENDOC_PRESENTATION: return "application/vnd.oasis.opendocument.presentation";
+        case RBT_CT_VND_OASIS_OPENDOC_GRAPHICS: return "application/vnd.oasis.opendocument.graphics";
+        case RBT_CT_VND_MS_EXCEL: return "application/vnd.ms-excel";
+        case RBT_CT_VND_OPENXMLFORMATS_OFFICEDOC_SPREDSHEETML_SHEET: return "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+        case RBT_CT_VND_MS_POWERPOINT: return "application/vnd.ms-powerpoint";
+        case RBT_CT_VND_OPENXMLFORMATS_OFFICEDOC_PRESENTATION: return "application/vnd.openxmlformats-officedocument.presentationml.presentation";
+        case RBT_CT_VND_MSWORD: return "application/msword";
+        case RBT_CT_VND_OPENXMLFORMATS_OFFICEDOC_WORDPROCESSINGML_DOCUMENT: return "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+        case RBT_CT_VND_MOZZILLA_XUL_XML: return "application/vnd.mozilla.xul+xml";
 
         case RBT_CT_NOT_DEFINED: return "text/plain"; //not defined data will be read as plain text
         default: return "text/html";    //default text/html
