@@ -18,6 +18,22 @@ unsigned int rbt_get_num_of_chars(char* string, char find){
 
 char *rbt_get_file_content_str(RabbitContentType contentType) {
     switch (contentType) {
+        // Application
+        case RBT_CT_APP_EDI_X_12: return "application/EDI-X12";
+        case RBT_CT_APP_EDIFACT: return "application/EDIFACT";
+        case RBT_CT_APP_JAVASCRIPT: return "application/javascript";
+        case RBT_CT_APP_OCTET_STREAM: return "application/octet-stream";
+        case RBT_CT_APP_OGG: return "application/ogg";
+        case RBT_CT_APP_PDF: return "application/pdf";
+        case RBT_CT_APP_XHTML_HTML: return "application/xhtml+xml";
+        case RBT_CT_APP_X_SHOCKWAVE_FLASH: return "application/x-shockwave-flash";
+        case RBT_CT_APP_JSON: return "application/json";
+        case RBT_CT_APP_LD_JSON: return "application/ld+json";
+        case RBT_CT_APP_XML: return "application/xml";
+        case RBT_CT_APP_ZIP: return "application/zip";
+        case RBT_CT_APP_X_WWW_FORM_URLENCODED: return "application/x-www-form-urlencoded";
+
+
         default: return "text/html";    //default text/html
     }
 }
