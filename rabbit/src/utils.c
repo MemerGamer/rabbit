@@ -55,6 +55,15 @@ char *rbt_get_file_content_str(RabbitContentType contentType) {
         case RBT_CT_MULTIPART_RELATED: return "multipart/related";
         case RBT_CT_MULTIPART_FORM_DATA: return "multipart/form-data";
 
+        // Text
+        case RBT_CT_TXT_CSS: return "text/css";
+        case RBT_CT_TXT_CSV: return "text/csv";
+        case RBT_CT_TXT_HTML: return "text/html";
+        case RBT_CT_TXT_JAVASCRIPT: return  "text/javascript";
+        case RBT_CT_TXT_PLAIN: return "text/plain";
+        case RBT_CT_TXT_XML: return "text/xml";
+
+
         case RBT_CT_NOT_DEFINED: return "text/plain"; //not defined data will be read as plain text
         default: return "text/html";    //default text/html
     }
