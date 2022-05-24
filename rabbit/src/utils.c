@@ -63,6 +63,15 @@ char *rbt_get_file_content_str(RabbitContentType contentType) {
         case RBT_CT_TXT_PLAIN: return "text/plain";
         case RBT_CT_TXT_XML: return "text/xml";
 
+        // Video
+        case RBT_CT_VID_MPEG: return "video/mpeg";
+        case RBT_CT_VID_MP4: return "video/mp4";
+        case RBT_CT_VID_QUICKTIME: return "video/quicktime";
+        case RBT_CT_VID_X_MS_WMV: return "video/x-ms-wmv";
+        case RBT_CT_VID_X_MSVIDEO: return "video/x-msvideo";
+        case RBT_CT_VID_X_FLV: return "video/x-flv";
+        case RBT_CT_VID_WEBM: return "video/webm";
+
 
         case RBT_CT_NOT_DEFINED: return "text/plain"; //not defined data will be read as plain text
         default: return "text/html";    //default text/html
