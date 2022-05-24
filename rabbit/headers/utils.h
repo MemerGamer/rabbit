@@ -49,6 +49,13 @@ typedef enum RabbitContentType{
     RBT_CT_IMG_VND_DJVU,
     RBT_CT_IMG_SVG_XML,
 
+    // Multipart
+    RBT_CT_MULTIPART_MIXED,
+    RBT_CT_MULTIPART_ALTERNATIVE,
+    RBT_CT_MULTIPART_RELATED,
+    RBT_CT_MULTIPART_FORM_DATA,
+
+
 
 }RabbitContentType;
 
