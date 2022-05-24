@@ -8,6 +8,10 @@
 #include <string.h>
 #include <stdbool.h>
 
+typedef enum RabbitContentType{
+
+}RabbitContentType;
+
 bool rbt_str_equals(char* str1, char* str2);
 unsigned int rbt_get_num_of_chars(char* string, char find);
 char* rbt_get_file_content_type(char* filepath);
