@@ -33,6 +33,13 @@ typedef enum RabbitContentType{
     RBT_CT_APP_ZIP,
     RBT_CT_APP_X_WWW_FORM_URLENCODED,
 
+    // Audio
+    RBT_CT_AUDIO_MPEG,
+    RBT_CT_AUDIO_X_MS_WMA,
+    RBT_CT_AUDIO_VND_RN_REALAUDIO,
+    RBT_CT_AUDIO_X_WAV,
+
+
 
 }RabbitContentType;
 
