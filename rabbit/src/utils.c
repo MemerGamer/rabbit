@@ -49,7 +49,13 @@ char *rbt_get_file_content_str(RabbitContentType contentType) {
         case RBT_CT_IMG_VND_DJVU: return "image/vnd.djvu";
         case RBT_CT_IMG_SVG_XML: return "image/svg+xml";
 
+        // Multipart
+        case RBT_CT_MULTIPART_MIXED: return "multipart/mixed";
+        case RBT_CT_MULTIPART_ALTERNATIVE: return "multipart/alternative";
+        case RBT_CT_MULTIPART_RELATED: return "multipart/related";
+        case RBT_CT_MULTIPART_FORM_DATA: return "multipart/form-data";
 
+        case RBT_CT_NOT_DEFINED: return "text/plain"; //not defined data will be read as plain text
         default: return "text/html";    //default text/html
     }
 }
