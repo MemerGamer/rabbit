@@ -39,6 +39,15 @@ typedef enum RabbitContentType{
     RBT_CT_AUDIO_VND_RN_REALAUDIO,
     RBT_CT_AUDIO_X_WAV,
 
+    // Image
+    RBT_CT_IMG_GIF,
+    RBT_CT_IMG_JPEG,
+    RBT_CT_IMG_PNG,
+    RBT_CT_IMG_TIFF,
+    RBT_CT_IMG_VND_MICROSOFT_ICON,
+    RBT_CT_IMG_X_ICON,
+    RBT_CT_IMG_VND_DJVU,
+    RBT_CT_IMG_SVG_XML,
 
 
 }RabbitContentType;
