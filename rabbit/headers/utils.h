@@ -55,6 +55,14 @@ typedef enum RabbitContentType{
     RBT_CT_MULTIPART_RELATED,
     RBT_CT_MULTIPART_FORM_DATA,
 
+    //Video
+    RBT_CT_VID_MPEG,
+    RBT_CT_VID_MP4,
+    RBT_CT_VID_QUICKTIME,
+    RBT_CT_VID_X_MS_WMV,
+    RBT_CT_VID_X_MSVIDEO,
+    RBT_CT_VID_X_FLV,
+    RBT_CT_VID_WEBM,
 
 
 }RabbitContentType;
