@@ -39,6 +39,16 @@ char *rbt_get_file_content_str(RabbitContentType contentType) {
         case RBT_CT_AUDIO_VND_RN_REALAUDIO: return "audio/vnd.rn-realaudio";
         case RBT_CT_AUDIO_X_WAV: return "audio/x-wav";
 
+        // Image
+        case RBT_CT_IMG_GIF: return "image/gif";
+        case RBT_CT_IMG_JPEG: return "image/jpeg";
+        case RBT_CT_IMG_PNG: return "image/png";
+        case RBT_CT_IMG_TIFF: return "image/tiff";
+        case RBT_CT_IMG_VND_MICROSOFT_ICON: return "image/vnd.microsoft.icon";
+        case RBT_CT_IMG_X_ICON: return "image/x-icon";
+        case RBT_CT_IMG_VND_DJVU: return "image/vnd.djvu";
+        case RBT_CT_IMG_SVG_XML: return "image/svg+xml";
+
 
         default: return "text/html";    //default text/html
     }
