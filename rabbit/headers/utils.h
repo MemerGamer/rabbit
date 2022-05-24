@@ -15,6 +15,7 @@ typedef enum RabbitContentType{
     RBT_CT_TXT_HTML,
     RBT_CT_TXT_CSS,
     RBT_CT_TXT_CSV,
+    RBT_CT_TXT_JAVASCRIPT,  //(obsolete)
     RBT_CT_TXT_PLAIN,
     RBT_CT_TXT_XML,
 
