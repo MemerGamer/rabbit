@@ -18,6 +18,22 @@ typedef enum RabbitContentType{
     RBT_CT_TXT_PLAIN,
     RBT_CT_TXT_XML,
 
+    // Application
+    RBT_CT_APP_EDI_X_12,
+    RBT_CT_APP_EDIFACT,
+    RBT_CT_APP_JAVASCRIPT,
+    RBT_CT_APP_OCTET_STREAM,
+    RBT_CT_APP_OGG,
+    RBT_CT_APP_PDF,
+    RBT_CT_APP_XHTML_HTML,
+    RBT_CT_APP_X_SHOCKWAVE_FLASH,
+    RBT_CT_APP_JSON,
+    RBT_CT_APP_LD_JSON,
+    RBT_CT_APP_XML,
+    RBT_CT_APP_ZIP,
+    RBT_CT_APP_X_WWW_FORM_URLENCODED,
+
+
 }RabbitContentType;
 
 bool rbt_str_equals(char* str1, char* str2);
