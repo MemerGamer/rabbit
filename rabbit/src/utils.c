@@ -142,3 +142,114 @@ void rbt_str_replace(char *target, const char *needle, const char *replacement){
     // write altered string back to target
     strcpy(target, buffer);
 }
+
+RabbitContentType rbt_filetype_to_content_type(char *filetype) {
+    //Prioritised
+    if(rbt_str_equals(filetype, ".html")){
+        return RBT_CT_TXT_HTML;
+    }
+    if(rbt_str_equals(filetype, ".html")){
+        return RBT_CT_TXT_CSS;
+    }
+    if(rbt_str_equals(filetype, ".png")){
+        return RBT_CT_IMG_PNG;
+    }
+    if(rbt_str_equals(filetype, ".js")){
+        return RBT_CT_APP_JAVASCRIPT;
+    }
+
+    // Application
+    if(rbt_str_equals(filetype,".x12")){
+        return RBT_CT_APP_EDI_X_12;
+    }
+    if(rbt_str_equals(filetype,".edi")){
+        return RBT_CT_APP_EDIFACT;
+    }
+    // Common files
+    if(rbt_str_equals(filetype, ".ex_") ||
+            rbt_str_equals(filetype, ".dl_") ||
+            rbt_str_equals(filetype, ".saf_") ||
+            rbt_str_equals(filetype, ".ini") ||
+            rbt_str_equals(filetype, ".dst") ||
+            // BlueZone Scripting
+            rbt_str_equals(filetype, ".bzs") ||
+            rbt_str_equals(filetype, ".bbs") ||
+            rbt_str_equals(filetype, ".bbh") ||
+            // BlueZone MainFrame
+            rbt_str_equals(filetype, ".e3d") ||
+            rbt_str_equals(filetype, ".e3p") ||
+            rbt_str_equals(filetype, ".zmd") ||
+            rbt_str_equals(filetype, ".zmp") ||
+            rbt_str_equals(filetype, ".mds") ||
+            rbt_str_equals(filetype, ".tn3") ||
+            rbt_str_equals(filetype, ".mdt") ||
+            rbt_str_equals(filetype, ".mdd") ||
+            rbt_str_equals(filetype, ".mdk") ||
+            rbt_str_equals(filetype, ".mdf") ||
+            rbt_str_equals(filetype, ".mdb") ||
+            rbt_str_equals(filetype, ".mdp") ||
+            rbt_str_equals(filetype, ".mdr") ||
+            // BlueZone ISeries
+            rbt_str_equals(filetype, ".e5d") ||
+            rbt_str_equals(filetype, ".e5p") ||
+            rbt_str_equals(filetype, ".zad") ||
+            rbt_str_equals(filetype, ".zap") ||
+            rbt_str_equals(filetype, ".ads") ||
+            rbt_str_equals(filetype, ".tn5") ||
+            rbt_str_equals(filetype, ".adt") ||
+            rbt_str_equals(filetype, ".add") ||
+            rbt_str_equals(filetype, ".adk") ||
+            rbt_str_equals(filetype, ".adf") ||
+            rbt_str_equals(filetype, ".adb") ||
+            rbt_str_equals(filetype, ".adp") ||
+            rbt_str_equals(filetype, ".adr") ||
+            // BlueZone VT
+            rbt_str_equals(filetype, ".evt") ||
+            rbt_str_equals(filetype, ".zvt") ||
+            rbt_str_equals(filetype, ".vds") ||
+            rbt_str_equals(filetype, ".vdd") ||
+            rbt_str_equals(filetype, ".vdk") ||
+            rbt_str_equals(filetype, ".vdf") ||
+            rbt_str_equals(filetype, ".vdb") ||
+            rbt_str_equals(filetype, ".vdp") ||
+            rbt_str_equals(filetype, ".vdr") ||
+            // BlueZone FTP
+            rbt_str_equals(filetype, ".eft") ||
+            rbt_str_equals(filetype, ".zft") ||
+            // BlueZone TCP/IP
+            rbt_str_equals(filetype, ".ztp") ||
+            // BlueZone ICL 7561
+            rbt_str_equals(filetype, ".z7d") ||
+            rbt_str_equals(filetype, ".ids") ||
+            rbt_str_equals(filetype, ".idc") ||
+            rbt_str_equals(filetype, ".idd") ||
+            rbt_str_equals(filetype, ".idk") ||
+            rbt_str_equals(filetype, ".idf") ||
+            rbt_str_equals(filetype, ".idb") ||
+            rbt_str_equals(filetype, ".idp") ||
+            rbt_str_equals(filetype, ".idr") ||
+            // BlueZone T27
+            rbt_str_equals(filetype, ".ztd") ||
+            rbt_str_equals(filetype, ".tds") ||
+            rbt_str_equals(filetype, ".tdd") ||
+            rbt_str_equals(filetype, ".tdk") ||
+            rbt_str_equals(filetype, ".tdf") ||
+            rbt_str_equals(filetype, ".tdb") ||
+            rbt_str_equals(filetype, ".tdp") ||
+            rbt_str_equals(filetype, ".tdr") ||
+            // BlueZone UTS
+            rbt_str_equals(filetype, ".zud") ||
+            rbt_str_equals(filetype, ".uds") ||
+            rbt_str_equals(filetype, ".udd") ||
+            rbt_str_equals(filetype, ".udk") ||
+            rbt_str_equals(filetype, ".udf") ||
+            rbt_str_equals(filetype, ".udb") ||
+            rbt_str_equals(filetype, ".udp") ||
+            rbt_str_equals(filetype, ".udr") ||
+            // BlueZone Host File Transfer
+            rbt_str_equals(filetype, ".adl") ||
+            rbt_str_equals(filetype, ".adf")){
+        return RBT_CT_APP_OCTET_STREAM;
+    }
+    return RBT_CT_NOT_DEFINED;
+}
