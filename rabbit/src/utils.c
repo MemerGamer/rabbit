@@ -154,6 +154,9 @@ RabbitContentType rbt_filetype_to_content_type(char *filetype) {
     if(rbt_str_equals(filetype, ".png")){
         return RBT_CT_IMG_PNG;
     }
+    if(rbt_str_equals(filetype, ".jpg")){
+        return RBT_CT_IMG_JPEG;
+    }
     if(rbt_str_equals(filetype, ".js")){
         return RBT_CT_APP_JAVASCRIPT;
     }
@@ -165,6 +168,15 @@ RabbitContentType rbt_filetype_to_content_type(char *filetype) {
     if(rbt_str_equals(filetype,".edi")){
         return RBT_CT_APP_EDIFACT;
     }
+    if(rbt_str_equals(filetype, ".ogg")){
+        return RBT_CT_APP_OGG;
+    }
+    if(rbt_str_equals(filetype, ".pdf")){
+        return RBT_CT_APP_PDF;
+    }
+
+
+
     // Common files
     if(rbt_str_equals(filetype, ".ex_") ||
             rbt_str_equals(filetype, ".dl_") ||
