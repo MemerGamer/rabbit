@@ -155,6 +155,15 @@ RabbitContentType rbt_filetype_to_content_type(char *filetype) {
         return RBT_CT_APP_JAVASCRIPT;
     }
 
+    // Text
+    if(rbt_str_equals(filetype, ".csv")){
+        return RBT_CT_TXT_CSV;
+    }
+    if(rbt_str_equals(filetype, ".txt")){
+        return RBT_CT_TXT_PLAIN;
+    }
+
+
     // Images
     if(rbt_str_equals(filetype,".gif")){
         return RBT_CT_IMG_GIF;
@@ -217,12 +226,35 @@ RabbitContentType rbt_filetype_to_content_type(char *filetype) {
         return RBT_CT_APP_X_WWW_FORM_URLENCODED;
     }
 
+    // Video
+    if(rbt_str_equals(filetype, ".mpg")){
+        return RBT_CT_VID_MPEG;
+    }
+    if(rbt_str_equals(filetype,".mp4") ||
+            rbt_str_equals(filetype,".m4a") ||
+            rbt_str_equals(filetype,".m4p") ||
+            rbt_str_equals(filetype,".m4b") ||
+            rbt_str_equals(filetype,".m4r") ||
+            rbt_str_equals(filetype,".m4v")){
+        return RBT_CT_VID_MP4;
+    }
+    if(rbt_str_equals(filetype,".mov")){
+        return RBT_CT_VID_QUICKTIME;
+    }
+    if(rbt_str_equals(filetype,".wmv")){
+        return RBT_CT_VID_X_MS_WMV;
+    }
+    if(rbt_str_equals(filetype,".avi")){
+        return RBT_CT_VID_X_MSVIDEO;
+    }
+    if(rbt_str_equals(filetype,".flv")){
+        return RBT_CT_VID_X_FLV;
+    }
+    if(rbt_str_equals(filetype,".mkv")){
+        return RBT_CT_VID_WEBM;
+    }
 
-
-
-
-
-
+    //Todo: VND and Multipart
 
     // Common files
     if(rbt_str_equals(filetype, ".ex_") ||
