@@ -93,22 +93,7 @@ char *rbt_get_file_content_str(RabbitContentType contentType) {
 char* rbt_get_file_content_type(char* filepath){
     char ext[10];
     strcpy(ext, strrchr(filepath, '.'));
-
-    if (rbt_str_equals(ext, ".html")){
-        return "text/html";
-    }
-    else if (rbt_str_equals(ext, ".txt")){
-        return "text/plain";
-    }
-    else if (rbt_str_equals(ext, ".css")){
-        return "text/css";
-    }
-    else if (rbt_str_equals(ext, ".png")){
-        return "image/png";
-    }
-    else if (rbt_str_equals(ext, ".js")){
-        return "application/javascript";
-    }
+    return rbt_get_file_content_str(rbt_filetype_to_content_type(ext));
 }
 
 void rbt_str_replace(char *target, const char *needle, const char *replacement){
@@ -157,11 +142,18 @@ RabbitContentType rbt_filetype_to_content_type(char *filetype) {
     if(rbt_str_equals(filetype, ".jpg")){
         return RBT_CT_IMG_JPEG;
     }
+    if(rbt_str_equals(filetype,".json")){
+        return RBT_CT_APP_JSON;
+    }
     if(rbt_str_equals(filetype, ".js")){
         return RBT_CT_APP_JAVASCRIPT;
     }
 
     // Application
+
+    if(rbt_str_equals(filetype,".zip")){
+        return RBT_CT_APP_ZIP;
+    }
     if(rbt_str_equals(filetype,".x12")){
         return RBT_CT_APP_EDI_X_12;
     }
@@ -173,6 +165,34 @@ RabbitContentType rbt_filetype_to_content_type(char *filetype) {
     }
     if(rbt_str_equals(filetype, ".pdf")){
         return RBT_CT_APP_PDF;
+    }
+    if(rbt_str_equals(filetype, ".htm")||
+        rbt_str_equals(filetype, ".xhtml") ||
+        rbt_str_equals(filetype, ".xht")){
+        return RBT_CT_APP_XHTML_HTML;
+    }
+    if(rbt_str_equals(filetype,".swf")){
+        return RBT_CT_APP_X_SHOCKWAVE_FLASH;
+    }
+    if(rbt_str_equals(filetype,".jsonld")){
+        return RBT_CT_APP_X_SHOCKWAVE_FLASH;
+    }
+    if(rbt_str_equals(filetype, ".xml")){
+        return RBT_CT_TXT_XML;
+    }
+    if(rbt_str_equals(filetype, ".xml")){
+        return RBT_CT_APP_X_WWW_FORM_URLENCODED;
+    }
+
+    // Audio
+    if(rbt_str_equals(filetype,".mpeg")){
+        return RBT_CT_AUDIO_MPEG;
+    }
+    if(rbt_str_equals(filetype,".x-ms-wma")){
+        return RBT_CT_AUDIO_X_MS_WMA;
+    }
+    if(rbt_str_equals(filetype,".ra") || rbt_str_equals(filetype,".ram")){
+        return RBT_CT_AUDIO_VND_RN_REALAUDIO;
     }
 
 
