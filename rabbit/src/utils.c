@@ -148,7 +148,7 @@ RabbitContentType rbt_filetype_to_content_type(char *filetype) {
     if(rbt_str_equals(filetype, ".html")){
         return RBT_CT_TXT_HTML;
     }
-    if(rbt_str_equals(filetype, ".html")){
+    if(rbt_str_equals(filetype, ".css")){
         return RBT_CT_TXT_CSS;
     }
     if(rbt_str_equals(filetype, ".png")){
