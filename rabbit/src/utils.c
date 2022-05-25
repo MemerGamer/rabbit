@@ -139,6 +139,12 @@ RabbitContentType rbt_filetype_to_content_type(char *filetype) {
     if(rbt_str_equals(filetype, ".png")){
         return RBT_CT_IMG_PNG;
     }
+    if(rbt_str_equals(filetype,".ico")){
+        return RBT_CT_IMG_X_ICON;
+    }
+    if(rbt_str_equals(filetype,".svg")){
+        return RBT_CT_IMG_SVG_XML;
+    }
     if(rbt_str_equals(filetype, ".jpg")){
         return RBT_CT_IMG_JPEG;
     }
@@ -149,8 +155,35 @@ RabbitContentType rbt_filetype_to_content_type(char *filetype) {
         return RBT_CT_APP_JAVASCRIPT;
     }
 
-    // Application
+    // Images
+    if(rbt_str_equals(filetype,".gif")){
+        return RBT_CT_IMG_GIF;
+    }
+    if(rbt_str_equals(filetype,".tiff")){
+        return RBT_CT_IMG_TIFF;
+    }
+    if(rbt_str_equals(filetype,".ICO")){
+        return RBT_CT_IMG_VND_MICROSOFT_ICON;
+    }
+    if(rbt_str_equals(filetype,".djvu") || rbt_str_equals(filetype,".djv")){
+        return RBT_CT_IMG_VND_DJVU;
+    }
 
+    // Audio
+    if(rbt_str_equals(filetype,".mpeg")){
+        return RBT_CT_AUDIO_MPEG;
+    }
+    if(rbt_str_equals(filetype,".x-ms-wma")){
+        return RBT_CT_AUDIO_X_MS_WMA;
+    }
+    if(rbt_str_equals(filetype,".ra") || rbt_str_equals(filetype,".ram")){
+        return RBT_CT_AUDIO_VND_RN_REALAUDIO;
+    }
+    if(rbt_str_equals(filetype,".wav") || rbt_str_equals(filetype,".wav")){
+        return RBT_CT_AUDIO_X_WAV;
+    }
+
+    // Application
     if(rbt_str_equals(filetype,".zip")){
         return RBT_CT_APP_ZIP;
     }
@@ -184,16 +217,10 @@ RabbitContentType rbt_filetype_to_content_type(char *filetype) {
         return RBT_CT_APP_X_WWW_FORM_URLENCODED;
     }
 
-    // Audio
-    if(rbt_str_equals(filetype,".mpeg")){
-        return RBT_CT_AUDIO_MPEG;
-    }
-    if(rbt_str_equals(filetype,".x-ms-wma")){
-        return RBT_CT_AUDIO_X_MS_WMA;
-    }
-    if(rbt_str_equals(filetype,".ra") || rbt_str_equals(filetype,".ram")){
-        return RBT_CT_AUDIO_VND_RN_REALAUDIO;
-    }
+
+
+
+
 
 
 
