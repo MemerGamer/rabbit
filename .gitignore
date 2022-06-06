@@ -1,2 +1,3 @@
 /cmake-build-debug/
 .vscode/settings.json
+demo/src/count.txt
