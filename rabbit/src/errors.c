@@ -4,14 +4,23 @@
 
 #include "../headers/errors.h"
 #include <string.h>
+#include <stdlib.h>
 
-#include <windows.h>
-
+#ifdef _WIN32
+    #include <windows.h>
+#else
+    #include <stdio.h>
+    #include <time.h>
+#endif
 #pragma execution_character_set("utf-8")
 
 int _rbt_log(char *message, char *destination, char* file, size_t line) {
+#ifdef _WIN32
     freopen(destination, "w", stdout);
     SetConsoleOutputCP( 65001 );
+#else
+    FILE* fp = freopen(destination, "w", stdout);
+#endif
     printf("\n");
     time_t t = time(NULL);
     struct tm tm = *localtime(&t);
