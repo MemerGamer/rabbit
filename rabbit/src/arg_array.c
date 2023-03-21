@@ -4,10 +4,24 @@
 
 #include "../headers/arg_array.h"
 #include <stdio.h>
+
+bool rbt_is_valid_string(const char *formatString);
+
 RabbitArgArray* rbt_get_arg_array(va_list arg_ptr){
 
     char* format_string = va_arg(arg_ptr, char*);  // get format string
     RabbitArgArray* arg_array = NULL;
+
+    if (format_string == NULL) {
+        printf("Error: format_string is NULL.\n");
+        return NULL;
+    }
+
+    if (!rbt_is_valid_string(format_string)) {
+        printf("Error: format_string is invalid.\n");
+        return NULL;
+    }
+
 
     printf("format_string=%s\n", format_string);
 
@@ -48,6 +62,10 @@ RabbitArgArray* rbt_get_arg_array(va_list arg_ptr){
     va_end(arg_ptr);
 
     return arg_array;
+}
+
+bool rbt_is_valid_string(const char *formatString) {
+    return (formatString != NULL && formatString[0] != '\0');
 }
 
 RabbitArgArray* rbt_create_arg_array(unsigned int num_of_args){

@@ -14,9 +14,10 @@ int main() {
     rbt_add_static(&server, "/test.txt", "../demo/src/test.txt");
     rbt_add_static(&server, "/Rabbit icon white.png", "../demo/src/Rabbit icon white.png");
     rbt_add_static(&server, "/background.png", "../demo/src/background.png");
-    rbt_add_api(&server, "/api/test", test, "%s %s %i %p", "alma", "korte", 1, server);
+    // Note: the server on unix based systems are only working for static files
+    // rbt_add_api(&server, "/api/test", test, "%s %s %i %p", "alma", "korte", 1, server);
     rbt_add_static(&server, "/api/count", "../demo/src/count.txt");
-    rbt_add_api(&server, "/api/count/up", count);
+    // rbt_add_api(&server, "/api/count/up", count);
 
     while(1){
         rbt_handle_request(&server);
