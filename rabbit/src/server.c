@@ -28,14 +28,21 @@ RabbitServer* rbt_create_server(int address_family, int protocol, int port, char
 
 RabbitError rbt_delete_server(RabbitServer** pserver){
     free((*pserver)->address);
+    #ifdef _WIN32
     closesocket((*pserver)->listen_socket);
+    #else
+    close((*pserver)->listen_socket);
+    #endif
+
     rbt_delete_hash_table(&(*pserver)->endpoints);
     free(*pserver);
 
     return RBT_ERR_NO_ERROR;
 }
 
-RabbitError rbt_end(){
+RabbitError rbt_end() {
+    #ifdef _WIN32
     WSACleanup();
+    #endif
     return RBT_ERR_NO_ERROR;
 }
