@@ -11,6 +11,9 @@
     #pragma comment(lib, "Ws2_32.lib")
 #else
     // Assume that any non-Windows platform uses POSIX-style sockets instead.
+    #define SOCKET int
+    #define INVALID_SOCKET (-1)
+    #define SOCKET_ERROR (-1)
     #include <sys/socket.h>
     #include <arpa/inet.h>
     #include <netdb.h>  // Needed for getaddrinfo() and freeaddrinfo()
