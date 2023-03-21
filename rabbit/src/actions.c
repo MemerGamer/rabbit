@@ -6,12 +6,14 @@
 #include "../headers/actions.h"
 
 RabbitError rbt_init(){
+    #ifdef _WIN32
     WSADATA wsaData;
     int iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
 
     if (iResult != NO_ERROR) {
         return RBT_ERR_CANT_START_SERVER;
     }
+    #endif
 
     return RBT_ERR_NO_ERROR;
 }
@@ -63,14 +65,33 @@ RabbitError rbt_start_server(RabbitServer* server) {
     service.sin_addr.s_addr = inet_addr(server->address);
     service.sin_port = htons(server->port);
 
+
+#ifdef _WIN32
     if (bind(server->listen_socket,(SOCKADDR *) & service, sizeof (service)) == SOCKET_ERROR) {
+
         closesocket(server->listen_socket);
+
         rbt_end();
         return RBT_ERR_CANT_START_SERVER;
     }
+#else
+    if (bind(server->listen_socket,(struct sockaddr *) & service, sizeof (service)) == SOCKET_ERROR) {
+
+
+        close(server->listen_socket);
+
+        rbt_end();
+        return RBT_ERR_CANT_START_SERVER;
+    }
+#endif
+
 
     if (listen(server->listen_socket, 1) == SOCKET_ERROR) {
-        closesocket(server->listen_socket);
+        #ifdef _WIN32
+            closesocket(server->listen_socket);
+        #else
+            close(server->listen_socket);
+        #endif
         rbt_end();
         return RBT_ERR_CANT_START_SERVER;
     }
@@ -87,7 +108,11 @@ RabbitError rbt_handle_request(RabbitServer **pserver) {
     // Accept the connection.
     AcceptSocket = accept((*pserver)->listen_socket, NULL, NULL);
     if (AcceptSocket == INVALID_SOCKET) {
+#ifdef _WIN32
         closesocket((*pserver)->listen_socket);
+#else
+        close((*pserver)->listen_socket);
+#endif
         rbt_end();
         return RBT_ERR_SOCKET_ERROR;
     } else{
@@ -121,7 +146,12 @@ RabbitError rbt_handle_request(RabbitServer **pserver) {
 
                 if (rbt_str_equals(rbt_get_file_content_type(endpoint->static_resource_path), "image/png")){
                     send(AcceptSocket, file_content, fsize, 0 );
+#ifdef _WIN32
                     closesocket(AcceptSocket);
+#else
+                    close(AcceptSocket);
+#endif
+
                     return RBT_ERR_NO_ERROR;
                 }
 
@@ -151,7 +181,11 @@ RabbitError rbt_handle_request(RabbitServer **pserver) {
 
         send(AcceptSocket, response_buffer, (int)strlen(response_buffer), 0 );
     }
+#ifdef _WIN32
     closesocket(AcceptSocket);
+#else
+    close(AcceptSocket);
+#endif
 
     return RBT_ERR_NO_ERROR;
 }
