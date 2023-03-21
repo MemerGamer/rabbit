@@ -3,18 +3,25 @@
 //
 
 #include "../headers/arg_array.h"
-
+#include <stdio.h>
 RabbitArgArray* rbt_get_arg_array(va_list arg_ptr){
 
     char* format_string = va_arg(arg_ptr, char*);  // get format string
     RabbitArgArray* arg_array = NULL;
 
-    if ((unsigned int)format_string != 0xcccccccc){ // hacky way to check if there are no arguments
+    printf("format_string=%s\n", format_string);
+
+    // fixed possible memory leak issue
+    if (format_string != NULL && format_string != (char*)0xcccccccc){ // hacky way to check if there are no arguments
         arg_array = rbt_create_arg_array(rbt_get_num_of_chars(format_string, '%'));
 
-        char* token = strtok(format_string, " ");
+        // here was a memory leak because of strtok
+        char* token;
+        char* next_token;
+        token = strtok_r(format_string, " ", &next_token);
 
         while( token != NULL ) {
+            printf("token=%s\n", token);
             arg_array->values[arg_array->num_of_args] = (RabbitArg*)calloc(1, sizeof(RabbitArg));
 
             if (rbt_str_equals(token, "%s")){
@@ -30,7 +37,7 @@ RabbitArgArray* rbt_get_arg_array(va_list arg_ptr){
                 arg_array->values[arg_array->num_of_args]->pointer = pointer;
             }
             else if(rbt_str_equals(token, "%f")){
-                float decimal = va_arg(arg_ptr, float);
+                float decimal = va_arg(arg_ptr, double);
                 arg_array->values[arg_array->num_of_args]->decimal = decimal;
             }
 
